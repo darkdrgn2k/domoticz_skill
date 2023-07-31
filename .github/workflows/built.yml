@@ -1,0 +1,38 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - master
+      - neon-update
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.5
+
+    - name: Install dependencies
+      run: pip install -r test-requirements.txt
+
+    - name: Set PYTHONPATH
+      run: export PYTHONPATH=$PYTHONPATH:$(pwd)
+
+    - name: Run flake8 tests
+      run: flake8 .
+
+#    - name: Send email notification on failure
+#      if: ${{ failure() }}
+#      run: echo "Build failed, sending email to matleses0@gmail.com"
+
+#    - name: Send email notification on success
+#      if: ${{ success() }}
+#      run: echo "Build succeeded, sending email to matleses0@gmail.com"
+#
